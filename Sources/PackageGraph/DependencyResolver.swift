@@ -131,6 +131,10 @@ public enum VersionSetSpecifier: Hashable, CustomStringConvertible {
             guard lhs != rhs else {
                 return nil
             }
+            if lhs.upperBound == rhs.upperBound && rhs.lowerBound <= lhs.lowerBound {
+                // The negative range forbids the entire positive range.
+                return .range(rhs)
+            }
             guard lhs.overlaps(rhs) else {
                 return .range(lhs)
             }
